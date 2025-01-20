@@ -1,0 +1,98 @@
+@use "sass:color";
+@import "./vars.scss";
+
+window.Bar {
+  border: none;
+  box-shadow: none;
+  background-color: $bg;
+  color: $fg;
+  font-size: 0.9em;
+  //font-weight: bold;
+
+  label {
+    margin: 0 0px;
+    padding: 0 8px;
+  }
+
+  .Separator {
+    color: $accent;
+    margin: 2px 0px;
+    font-weight: bold;
+  }
+
+  .Workspaces {
+    button {
+      all: unset;
+      background-color: transparent;
+
+      label {
+        padding: 0 5px;
+      }
+
+      &:hover label {
+        background-color: color.adjust($fg, $alpha: -0.84);
+        border-color: color.adjust($accent, $alpha: -0.8);
+      }
+
+      /* &:active label {
+        background-color: color.adjust($fg, $alpha: -0.8);
+      }*/
+    }
+
+    label {
+      transition: 0ms;
+      padding: 0 0px;
+      margin: 0px;
+      border-radius: $radius;
+      border: 1pt solid transparent;
+    }
+
+    .focused label {
+      color: $bg;
+      background-color: $accent;
+      font-weight: bold;
+      border-bottom: $accent 1px solid;
+    }
+  }
+
+  .SysTray {
+    margin-right: 8px;
+
+    button {
+      padding: 0 4px;
+    }
+  }
+
+  .FocusedClient {
+    color: $accent;
+  }
+
+  .Media .Cover {
+    min-height: 1.2em;
+    min-width: 1.2em;
+    border-radius: $radius;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .Battery {
+    padding-right: 10px;
+
+    label {
+      padding: 0;
+      margin: 0;
+    }
+
+    .full {
+      color: $good;
+    }
+
+    .warning {
+      color: $warning;
+    }
+
+    .critical {
+      color: $bad;
+    }
+  }
+}
