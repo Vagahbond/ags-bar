@@ -5,44 +5,44 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     ags,
+    ...
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
 
-    agsPackages = [
+    extraAgsPackages = [
       ags.packages.${system}.hyprland
       ags.packages.${system}.mpris
       ags.packages.${system}.battery
-      ags.packages.${system}.wireplumber
-      ags.packages.${system}.network
       ags.packages.${system}.tray
     ];
-  in {
-    packages.${system}.default = ags.lib.bundle {
+
+    agsPackage = ags.lib.bundle {
       inherit pkgs;
       src = ./.;
-      name = "nix-shell"; # name of executable
+      name = "ags_bar"; # name of executable
       entry = "app.ts";
 
       # additional libraries and executables to add to gjs' runtime
-      extraPackages = agsPackages;
+      extraPackages = extraAgsPackages;
     };
+  in {
+    nixosModules.default = (import ./nix/default.nix) {inherit agsPackage;};
 
     devShells.${system}.default =
       pkgs.mkShell
       {
         packages = [
           (ags.packages.${system}.default.override {
-            extraPackages = agsPackages;
+            extraPackages = extraAgsPackages;
           })
         ];
 
         buildInputs = [
           (ags.packages.${system}.default.override {
-            extraPackages = agsPackages;
+            extraPackages = extraAgsPackages;
           })
         ];
       };
