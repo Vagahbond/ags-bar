@@ -139,10 +139,19 @@ function Separator() {
 
 export default function Bar(monitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
+  const hypr = Hyprland.get_default();
 
   return (
     <window
-      className="Bar"
+      className={bind(hypr, "focusedClient").as((f) => {
+        console.log(f);
+        if (f !== null) {
+          return "Bar";
+        } else {
+          console.log("PROUT");
+          return "Bar NoFocus";
+        }
+      })}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
