@@ -139,19 +139,40 @@ function Separator() {
 
 export default function Bar(monitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
+
+  const hasTiledWindow = Variable(false);
   const hypr = Hyprland.get_default();
+
+  function hasNoTiledClients() {
+    return !!hypr.clients.filter(
+      (c) => c.workspace.id === hypr.focusedWorkspace.id && !c.floating,
+    ).length;
+  }
+
+  bind(hypr, "clients").subscribe((_) => {
+    hasTiledWindow.set(hasNoTiledClients());
+  });
+
+  bind(hypr, "focusedClient").subscribe((_) => {
+    hasTiledWindow.set(hasNoTiledClients());
+  });
 
   return (
     <window
-      className={bind(hypr, "focusedClient").as((f) => {
-        console.log(f);
-        if (f !== null) {
+      className={
+        hasTiledWindow((has) => (has ? "Bar" : "Bar NoFocus"))
+        /* bind(hypr, "clients").as((w) => {
+        const hasClients = !!w.filter(
+          (w) => w.workspace.id === hypr.focusedWorkspace.id,
+        ).length;
+
+        if (hasClients) {
           return "Bar";
         } else {
-          console.log("PROUT");
           return "Bar NoFocus";
         }
-      })}
+      })*/
+      }
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
