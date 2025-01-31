@@ -153,26 +153,13 @@ export default function Bar(monitor: Gdk.Monitor) {
     hasTiledWindow.set(hasNoTiledClients());
   });
 
-  bind(hypr, "focusedClient").subscribe((_) => {
+  bind(hypr, "focusedWorkspace").subscribe((_) => {
     hasTiledWindow.set(hasNoTiledClients());
   });
 
   return (
     <window
-      className={
-        hasTiledWindow((has) => (has ? "Bar" : "Bar NoFocus"))
-        /* bind(hypr, "clients").as((w) => {
-        const hasClients = !!w.filter(
-          (w) => w.workspace.id === hypr.focusedWorkspace.id,
-        ).length;
-
-        if (hasClients) {
-          return "Bar";
-        } else {
-          return "Bar NoFocus";
-        }
-      })*/
-      }
+      className={hasTiledWindow((has) => (has ? "Bar" : "Bar NoFocus"))}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
