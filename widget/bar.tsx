@@ -161,6 +161,7 @@ export default function Bar(monitor: Gdk.Monitor) {
     <window
       className={hasTiledWindow((has) => (has ? "Bar" : "Bar NoFocus"))}
       gdkmonitor={monitor}
+      heightRequest={30}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
     >
